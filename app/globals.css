@@ -1,0 +1,125 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 260 40% 12%;
+    --foreground: 0 0% 100%;
+    --card: 261 40% 16%;
+    --card-foreground: 0 0% 100%;
+    --popover: 261 40% 16%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 252 100% 69%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 260 40% 20%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 260 40% 16%;
+    --muted-foreground: 0 0% 80%;
+    --accent: 252 100% 69%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 260 40% 20%;
+    --input: 260 40% 20%;
+    --ring: 252 100% 69%;
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-gradient-purple text-foreground antialiased;
+  }
+}
+
+@keyframes fade-up {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes fade-left {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 1s forwards;
+}
+
+.animate-fade-left {
+  animation: fade-left 1s forwards;
+}
+
+/* Custom styles for cards and buttons */
+.card-gradient {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.button-gradient {
+  background: linear-gradient(90deg, #6d28d9 0%, #7c3aed 100%);
+  transition: all 0.3s ease;
+}
+
+.button-gradient:hover {
+  background: linear-gradient(90deg, #5b21b6 0%, #6d28d9 100%);
+  transform: translateY(-1px);
+}
+
+.button-outline {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.button-outline:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Custom node styles */
+.node {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.node:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Custom animations */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
