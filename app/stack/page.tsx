@@ -214,14 +214,14 @@ export default function StackPage() {
                         <div className="flex flex-col-reverse items-center gap-2 w-full max-w-[200px]">
                           {/* Animation for pushing */}
                           {isAnimating && animationStep === 1 && animationItem !== null && (
-                            <div className="flex h-12 w-full items-center justify-center rounded-md border-2 border-yellow-500 bg-yellow-100 mb-4 animate-bounce">
+                            <div className="flex h-12 w-full items-center justify-center rounded-md border-2 border-purple-500 bg-purple-900 text-white mb-4 animate-bounce shadow-[0_0_15px_rgba(168,85,247,0.5)]">
                               {animationItem}
                             </div>
                           )}
 
                           {/* Animation for popping */}
                           {isAnimating && animationStep === 2 && poppedItem !== null && (
-                            <div className="absolute top-4 flex h-12 w-[200px] items-center justify-center rounded-md border-2 border-red-500 bg-red-100 animate-fade-up">
+                            <div className="absolute top-4 flex h-12 w-[200px] items-center justify-center rounded-md border-2 border-red-500 bg-red-900 text-white animate-fade-up shadow-[0_0_15px_rgba(239,68,68,0.5)]">
                               {poppedItem}
                             </div>
                           )}
@@ -244,7 +244,7 @@ export default function StackPage() {
                                       index === stackItems.length - 1 &&
                                       isAnimating &&
                                       (animationStep === 1 || animationStep === 3)
-                                        ? "border-primary bg-primary/10 shadow-md"
+                                        ? "border-purple-500 bg-purple-900 text-white shadow-[0_0_15px_rgba(168,85,247,0.5)]"
                                         : "border-muted-foreground/30 bg-background"
                                     }
                                     transition-all duration-300

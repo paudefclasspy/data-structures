@@ -273,7 +273,7 @@ export default function HashTablePage() {
                       <div className="relative min-h-[400px]">
                         {/* Hash calculation animation */}
                         {isAnimating && animationStep === 1 && animationKey && (
-                          <div className="mb-4 p-3 bg-yellow-100 rounded-md">
+                          <div className="mb-4 p-3 bg-purple-900 border border-purple-500 rounded-md text-white shadow-[0_0_10px_rgba(168,85,247,0.3)]">
                             <p className="font-medium">Hash Calculation</p>
                             <p className="text-sm">
                               hash("{animationKey}") ={" "}
@@ -315,10 +315,10 @@ export default function HashTablePage() {
                                         ${
                                           animationKey === item.key && animationStep > 2
                                             ? (animationStep === 4 || animationStep === 6)
-                                              ? "border-green-500 bg-green-100"
+                                              ? "border-green-500 bg-green-900 text-white shadow-[0_0_15px_rgba(34,197,94,0.5)]"
                                               : animationStep === 5
-                                                ? "border-red-500 bg-red-100"
-                                                : "border-yellow-500 bg-yellow-100"
+                                                ? "border-red-500 bg-red-900 text-white shadow-[0_0_15px_rgba(239,68,68,0.5)]"
+                                                : "border-purple-500 bg-purple-900 text-white shadow-[0_0_15px_rgba(168,85,247,0.5)]"
                                             : "border-muted-foreground/30"
                                         }
                                       `}
@@ -358,7 +358,9 @@ export default function HashTablePage() {
 
                         {/* Search result */}
                         {searchResult && !isAnimating && (
-                          <div className={`mt-4 p-3 rounded-md ${searchResult.found ? "bg-green-100" : "bg-red-100"}`}>
+                          <div
+                            className={`mt-4 p-3 rounded-md ${searchResult.found ? "bg-green-900 border border-green-500 text-white shadow-[0_0_10px_rgba(34,197,94,0.3)]" : "bg-red-900 border border-red-500 text-white shadow-[0_0_10px_rgba(239,68,68,0.3)]"}`}
+                          >
                             <p className="font-medium">
                               {searchResult.found
                                 ? `Key "${searchKey}" found at index ${searchResult.index}`

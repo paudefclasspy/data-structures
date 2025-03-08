@@ -127,7 +127,7 @@ export default function QueuePage() {
 
     // Step 2: Dequeue the item
     animationTimeoutRef.current = setTimeout(() => {
-      const dequeuedValue = queue.dequeue()
+      const dequeuedValue = queue.dequeue() ?? null
       setDequeuedItem(dequeuedValue)
       updateQueueItems()
       setAnimationStep(2)
@@ -214,14 +214,14 @@ export default function QueuePage() {
                         <div className="flex flex-col items-center w-full">
                           {/* Animation for enqueuing */}
                           {isAnimating && animationStep === 1 && animationItem !== null && (
-                            <div className="absolute right-4 flex h-12 w-12 items-center justify-center rounded-md border-2 border-yellow-500 bg-yellow-100 animate-bounce">
+                            <div className="absolute right-4 flex h-12 w-12 items-center justify-center rounded-md border-2 border-purple-500 bg-purple-900 text-white animate-bounce shadow-[0_0_15px_rgba(168,85,247,0.5)]">
                               {animationItem}
                             </div>
                           )}
 
                           {/* Animation for dequeuing */}
                           {isAnimating && animationStep === 2 && dequeuedItem !== null && (
-                            <div className="absolute left-4 flex h-12 w-12 items-center justify-center rounded-md border-2 border-red-500 bg-red-100 animate-fade-left">
+                            <div className="absolute left-4 flex h-12 w-12 items-center justify-center rounded-md border-2 border-red-500 bg-red-900 text-white animate-fade-left shadow-[0_0_15px_rgba(239,68,68,0.5)]">
                               {dequeuedItem}
                             </div>
                           )}
@@ -243,9 +243,9 @@ export default function QueuePage() {
                                       flex h-12 w-12 items-center justify-center rounded-md border-2
                                       ${
                                         index === 0 && isAnimating && (animationStep === 1 || animationStep === 3)
-                                          ? "border-primary bg-primary/10 shadow-md"
+                                          ? "border-purple-500 bg-purple-900 text-white shadow-[0_0_15px_rgba(168,85,247,0.5)]"
                                           : index === queueItems.length - 1 && isAnimating && animationStep === 1
-                                            ? "border-primary bg-primary/10 shadow-md"
+                                            ? "border-purple-500 bg-purple-900 text-white shadow-[0_0_15px_rgba(168,85,247,0.5)]"
                                             : "border-muted-foreground/30 bg-background"
                                       }
                                       transition-all duration-300

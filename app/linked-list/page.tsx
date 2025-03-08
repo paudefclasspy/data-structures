@@ -388,11 +388,11 @@ export default function LinkedListPage() {
                                     ${
                                       animationPosition === index && animationStep > 0
                                         ? animationStep === 1 && animationNode === value
-                                          ? "border-yellow-500 bg-yellow-100"
+                                          ? "border-purple-500 bg-purple-900 text-white shadow-[0_0_15px_rgba(168,85,247,0.5)]"
                                           : animationStep === 2 && animationNode === value
-                                            ? "border-green-500 bg-green-100"
+                                            ? "border-green-500 bg-green-900 text-white shadow-[0_0_15px_rgba(34,197,94,0.5)]"
                                             : animationStep === 3
-                                              ? "border-red-500 bg-red-100"
+                                              ? "border-red-500 bg-red-900 text-white shadow-[0_0_15px_rgba(239,68,68,0.5)]"
                                               : "border-primary bg-primary/10"
                                         : "border-primary bg-primary/10"
                                     }
@@ -417,10 +417,12 @@ export default function LinkedListPage() {
                                 (operation === "end" && animationPosition === listArray.length) ||
                                 operation === "position") && (
                                 <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center">
-                                  <div className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-yellow-500 bg-yellow-100">
+                                  <div className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-purple-500 bg-purple-900 text-white shadow-[0_0_15px_rgba(168,85,247,0.5)]">
                                     {animationNode}
                                   </div>
-                                  <div className="ml-2 bg-white p-1 rounded shadow-sm text-sm">New node</div>
+                                  <div className="ml-2 bg-purple-900 border border-purple-500 p-1 rounded shadow-sm text-sm text-white">
+                                    New node
+                                  </div>
                                 </div>
                               )}
                           </div>
@@ -441,7 +443,9 @@ export default function LinkedListPage() {
 
                       {/* Search result */}
                       {searchResult !== null && !isAnimating && (
-                        <div className={`mt-4 p-3 rounded-md ${searchResult >= 0 ? "bg-green-100" : "bg-red-100"}`}>
+                        <div
+                          className={`mt-4 p-3 rounded-md ${searchResult >= 0 ? "bg-green-900 border border-green-500 text-white" : "bg-red-900 border border-red-500 text-white"}`}
+                        >
                           <p className="font-medium">
                             {searchResult >= 0
                               ? `Value found at position ${searchResult}`

@@ -2,12 +2,15 @@
 
 import { useState, useRef, useEffect } from "react"
 import Link from "next/link"
-import { ArrowLeft, Info, Plus, Search, Trash } from "lucide-react"
+import { ArrowLeft, Info, Plus, Search, Trash, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+
+// Constants
+const MAX_NODES = 15 // Maximum number of nodes allowed
 
 // Binary Tree Node class
 class TreeNode {
@@ -29,18 +32,34 @@ class TreeNode {
 // Binary Search Tree class
 class BinarySearchTree {
   root: TreeNode | null
+  nodeCount: number
 
   constructor() {
     this.root = null
+    this.nodeCount = 0
+  }
+
+  // Get current node count
+  getNodeCount(): number {
+    return this.nodeCount
   }
 
   // Insert a value
-  insert(value: number) {
+  insert(value: number): { success: boolean; message?: string } {
+    // Check if we've reached the maximum node count
+    if (this.nodeCount >= MAX_NODES) {
+      return {
+        success: false,
+        message: `Maximum node limit (${MAX_NODES}) reached. Cannot add more nodes.`,
+      }
+    }
+
     const newNode = new TreeNode(value)
 
     if (!this.root) {
       this.root = newNode
-      return this
+      this.nodeCount++
+      return { success: true }
     }
 
     const insertNode = (node: TreeNode, newNode: TreeNode) => {
@@ -48,23 +67,31 @@ class BinarySearchTree {
       if (newNode.value < node.value) {
         if (node.left === null) {
           node.left = newNode
+          this.nodeCount++
+          return true
         } else {
-          insertNode(node.left, newNode)
+          return insertNode(node.left, newNode)
         }
       }
       // Go right if value is greater than current node
       else if (newNode.value > node.value) {
         if (node.right === null) {
           node.right = newNode
+          this.nodeCount++
+          return true
         } else {
-          insertNode(node.right, newNode)
+          return insertNode(node.right, newNode)
         }
       }
       // Value already exists, do nothing
+      return false
     }
 
-    insertNode(this.root, newNode)
-    return this
+    const inserted = insertNode(this.root, newNode)
+    return {
+      success: inserted,
+      message: inserted ? undefined : `Value ${value} already exists in the tree.`,
+    }
   }
 
   // Search for a value
@@ -122,7 +149,9 @@ class BinarySearchTree {
   }
 
   // Delete a node
-  delete(value: number) {
+  delete(value: number): { success: boolean; message?: string } {
+    let nodeDeleted = false
+
     const removeNode = (node: TreeNode | null, value: number): TreeNode | null => {
       if (node === null) {
         return null
@@ -139,18 +168,22 @@ class BinarySearchTree {
       }
 
       // Value found, now delete
+      nodeDeleted = true
 
       // Case 1: Leaf node (no children)
       if (node.left === null && node.right === null) {
+        this.nodeCount--
         return null
       }
 
       // Case 2: Node with only one child
       if (node.left === null) {
+        this.nodeCount--
         return node.right
       }
 
       if (node.right === null) {
+        this.nodeCount--
         return node.left
       }
 
@@ -171,7 +204,11 @@ class BinarySearchTree {
     }
 
     this.root = removeNode(this.root, value)
-    return this
+
+    return {
+      success: nodeDeleted,
+      message: nodeDeleted ? undefined : `Value ${value} not found in the tree.`,
+    }
   }
 
   // In-order traversal (left, root, right)
@@ -222,36 +259,76 @@ class BinarySearchTree {
     return result
   }
 
-  // Calculate positions for visualization
-  calculatePositions() {
+  // Get tree height
+  getHeight(): number {
+    const calculateHeight = (node: TreeNode | null): number => {
+      if (node === null) return 0
+      const leftHeight = calculateHeight(node.left)
+      const rightHeight = calculateHeight(node.right)
+      return Math.max(leftHeight, rightHeight) + 1
+    }
+
+    return calculateHeight(this.root)
+  }
+
+  // Get tree width
+  getWidth(): number {
+    let maxWidth = 0
+    const widths: number[] = []
+
+    const getWidthAtLevel = (node: TreeNode | null, level: number): number => {
+      if (node === null) return 0
+      if (level === 0) return 1
+
+      return getWidthAtLevel(node.left, level - 1) + getWidthAtLevel(node.right, level - 1)
+    }
+
+    const height = this.getHeight()
+    for (let i = 0; i < height; i++) {
+      const width = getWidthAtLevel(this.root, i)
+      widths[i] = width
+      maxWidth = Math.max(maxWidth, width)
+    }
+
+    return maxWidth
+  }
+
+  // Calculate positions for visualization with boundary constraints
+  calculatePositions(canvasWidth: number, canvasHeight: number) {
     if (!this.root) return
 
-    const nodeWidth = 40
-    const levelHeight = 70
-    const getWidth = (node: TreeNode | null): number => {
-      if (!node) return 0
-      return getWidth(node.left) + nodeWidth + getWidth(node.right)
-    }
+    const height = this.getHeight()
+    const width = this.getWidth()
+
+    // Calculate scaling factors to fit the tree in the canvas
+    const levelHeight = Math.min(70, (canvasHeight - 80) / (height || 1))
+    const horizontalSpacing = Math.min(60, (canvasWidth - 80) / (width || 1))
+
+    // Padding from the edges
+    const padding = 30
 
     const setPositions = (node: TreeNode | null, x: number, y: number, level: number) => {
       if (!node) return
 
-      const leftWidth = getWidth(node.left)
+      // Ensure node is within boundaries
+      node.x = Math.max(padding, Math.min(canvasWidth - padding, x))
+      node.y = Math.max(padding, Math.min(canvasHeight - padding, y))
 
-      node.x = x
-      node.y = y
+      // Calculate horizontal offset based on tree balance
+      const leftOffset = node.left ? horizontalSpacing * Math.pow(1.3, height - level - 1) : horizontalSpacing
+      const rightOffset = node.right ? horizontalSpacing * Math.pow(1.3, height - level - 1) : horizontalSpacing
 
       if (node.left) {
-        setPositions(node.left, x - leftWidth / 2, y + levelHeight, level + 1)
+        setPositions(node.left, x - leftOffset, y + levelHeight, level + 1)
       }
 
       if (node.right) {
-        setPositions(node.right, x + leftWidth / 2 + nodeWidth, y + levelHeight, level + 1)
+        setPositions(node.right, x + rightOffset, y + levelHeight, level + 1)
       }
     }
 
-    const totalWidth = getWidth(this.root)
-    setPositions(this.root, totalWidth / 2, 40, 0)
+    // Start positioning from the center of the canvas
+    setPositions(this.root, canvasWidth / 2, 40, 0)
   }
 
   // Get all nodes for visualization
@@ -270,21 +347,29 @@ class BinarySearchTree {
     return nodes
   }
 
-  // Get all edges for visualization
-  getAllEdges(): { from: TreeNode; to: TreeNode }[] {
+  // Get all edges for visualization with boundary checking
+  getAllEdges(canvasWidth: number, canvasHeight: number): { from: TreeNode; to: TreeNode }[] {
     const edges: { from: TreeNode; to: TreeNode }[] = []
+    const padding = 10
+
+    const isWithinBounds = (node: TreeNode): boolean => {
+      return (
+        node.x >= padding && node.x <= canvasWidth - padding && node.y >= padding && node.y <= canvasHeight - padding
+      )
+    }
 
     const traverse = (node: TreeNode | null) => {
       if (node !== null) {
-        if (node.left) {
+        if (node.left && isWithinBounds(node) && isWithinBounds(node.left)) {
           edges.push({ from: node, to: node.left })
-          traverse(node.left)
         }
 
-        if (node.right) {
+        if (node.right && isWithinBounds(node) && isWithinBounds(node.right)) {
           edges.push({ from: node, to: node.right })
-          traverse(node.right)
         }
+
+        traverse(node.left)
+        traverse(node.right)
       }
     }
 
@@ -306,15 +391,25 @@ export default function BinaryTreePage() {
   const [animationIndex, setAnimationIndex] = useState(0)
   const [isAnimating, setIsAnimating] = useState(false)
   const [operationDescription, setOperationDescription] = useState("")
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [canvasSize, setCanvasSize] = useState({ width: 600, height: 400 })
   const canvasRef = useRef<HTMLDivElement>(null)
   const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Update the tree visualization
   const updateTree = () => {
-    bst.calculatePositions()
-    setNodes(bst.getAllNodes())
-    setEdges(bst.getAllEdges())
+    if (canvasRef.current) {
+      const width = canvasRef.current.clientWidth || 600
+      const height = 400
+      bst.calculatePositions(width, height)
+
+      // Get updated nodes and edges with boundary checking
+      const updatedNodes = bst.getAllNodes()
+      const updatedEdges = bst.getAllEdges(width, height)
+
+      setNodes(updatedNodes)
+      setEdges(updatedEdges)
+    }
   }
 
   // Clear any ongoing animations
@@ -327,6 +422,7 @@ export default function BinaryTreePage() {
     setAnimationPath([])
     setAnimationIndex(0)
     setIsAnimating(false)
+    setErrorMessage(null)
   }
 
   // Handle insert operation
@@ -346,7 +442,21 @@ export default function BinaryTreePage() {
     const animateTraversal = (index: number) => {
       if (index >= path.length) {
         // Step 2: Insert the node
-        bst.insert(numValue)
+        const result = bst.insert(numValue)
+
+        if (!result.success) {
+          setErrorMessage(result.message || "Failed to insert node")
+          setAnimationStep(4) // Use step 4 for error
+
+          // Complete with error
+          animationTimeoutRef.current = setTimeout(() => {
+            clearAnimation()
+            setValue("")
+          }, 2000)
+          return
+        }
+
+        // Immediately update the tree to ensure edges are drawn
         updateTree()
         setAnimationStep(2)
 
@@ -354,6 +464,8 @@ export default function BinaryTreePage() {
         animationTimeoutRef.current = setTimeout(() => {
           clearAnimation()
           setValue("")
+          // Update the tree again after animation to ensure all connections are visible
+          updateTree()
         }, 1000)
         return
       }
@@ -437,6 +549,7 @@ export default function BinaryTreePage() {
       if (index >= path.length) {
         // Node not found
         setAnimationStep(4)
+        setErrorMessage(`Value ${numValue} not found in the tree.`)
 
         // Complete
         animationTimeoutRef.current = setTimeout(() => {
@@ -455,9 +568,15 @@ export default function BinaryTreePage() {
 
           // Delete the node
           animationTimeoutRef.current = setTimeout(() => {
-            bst.delete(numValue)
-            updateTree()
-            setAnimationStep(6)
+            const result = bst.delete(numValue)
+
+            if (!result.success) {
+              setErrorMessage(result.message || "Failed to delete node")
+              setAnimationStep(4)
+            } else {
+              updateTree()
+              setAnimationStep(6)
+            }
 
             // Complete
             animationTimeoutRef.current = setTimeout(() => {
@@ -511,6 +630,7 @@ export default function BinaryTreePage() {
         const width = canvasRef.current.clientWidth || 600
         const height = 400
         setCanvasSize({ width, height })
+        updateTree()
       }
     }
 
@@ -554,6 +674,17 @@ export default function BinaryTreePage() {
     }
   }, [bst, nodes.length])
 
+  // Force update edges when nodes change
+  useEffect(() => {
+    if (nodes.length > 0 && canvasRef.current) {
+      const width = canvasRef.current.clientWidth || 600
+      const height = 400
+      // Ensure edges are properly calculated with boundary checking
+      const updatedEdges = bst.getAllEdges(width, height)
+      setEdges(updatedEdges)
+    }
+  }, [nodes, bst])
+
   return (
     <div className="min-h-screen flex flex-col">
       <header className="border-b">
@@ -572,7 +703,7 @@ export default function BinaryTreePage() {
               <div>
                 <h1 className="text-3xl font-bold tracking-tight">Binary Search Tree Visualization</h1>
                 <p className="mt-2 text-lg text-muted-foreground">
-                  Visualize operations on a binary search tree data structure
+                  Visualize operations on a binary search tree data structure (Max {MAX_NODES} nodes)
                 </p>
               </div>
 
@@ -581,64 +712,98 @@ export default function BinaryTreePage() {
                   <Card>
                     <CardHeader>
                       <CardTitle>Visualization</CardTitle>
-                      <CardDescription>Visual representation of the binary search tree</CardDescription>
+                      <CardDescription>
+                        Visual representation of the binary search tree ({bst.getNodeCount()}/{MAX_NODES} nodes)
+                      </CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div
                         ref={canvasRef}
                         className="relative min-h-[400px] border rounded-md bg-muted/30 overflow-hidden"
                       >
-                        {/* Tree edges */}
-                        <svg className="absolute inset-0 w-full h-full pointer-events-none">
-                          {edges.map((edge, index) => (
-                            <line
-                              key={index}
-                              x1={edge.from.x + 20}
-                              y1={edge.from.y + 20}
-                              x2={edge.to.x + 20}
-                              y2={edge.to.y + 20}
-                              stroke="currentColor"
-                              strokeOpacity="0.5"
-                              strokeWidth="2"
-                            />
-                          ))}
-                        </svg>
+                        <div
+                          className="absolute inset-0"
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                          }}
+                        >
+                          {/* Tree edges */}
+                          <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                            {edges.map((edge, index) => (
+                              <line
+                                key={`edge-${edge.from.value}-${edge.to.value}`}
+                                x1={edge.from.x + 20}
+                                y1={edge.from.y + 20}
+                                x2={edge.to.x + 20}
+                                y2={edge.to.y + 20}
+                                stroke="currentColor"
+                                strokeOpacity="0.7"
+                                strokeWidth="2"
+                                className="transition-all duration-300"
+                              />
+                            ))}
+                          </svg>
 
-                        {/* Tree nodes */}
-                        {nodes.map((node, index) => {
-                          const isInPath = animationPath.includes(node)
-                          const isCurrentNode = isInPath && animationPath[animationIndex] === node
+                          {/* Tree nodes */}
+                          {nodes.map((node) => {
+                            const isInPath = animationPath.includes(node)
+                            const isCurrentNode = isInPath && animationPath[animationIndex] === node
 
-                          return (
-                            <div
-                              key={index}
-                              className={`
-                                absolute flex items-center justify-center w-10 h-10 rounded-full border-2
-                                ${
-                                  isCurrentNode
-                                    ? animationStep === 3
-                                      ? "border-green-500 bg-green-100"
-                                      : animationStep === 4
-                                        ? "border-red-500 bg-red-100"
-                                        : animationStep === 5
-                                          ? "border-red-500 bg-red-100"
-                                          : "border-yellow-500 bg-yellow-100"
-                                    : isInPath && animationIndex > 0
-                                      ? "border-primary bg-primary/10"
-                                      : "border-muted-foreground/50 bg-background"
-                                }
-                                transition-all duration-300
-                              `}
-                              style={{
-                                left: `${node.x}px`,
-                                top: `${node.y}px`,
-                              }}
-                            >
-                              {node.value}
-                            </div>
-                          )
-                        })}
+                            return (
+                              <div
+                                key={`node-${node.value}`}
+                                className={`
+                                  absolute flex items-center justify-center w-10 h-10 rounded-full border-2
+                                  ${
+                                    isCurrentNode
+                                      ? animationStep === 3
+                                        ? "border-green-500 bg-green-900 text-white shadow-[0_0_15px_rgba(34,197,94,0.5)]"
+                                        : animationStep === 4
+                                          ? "border-red-500 bg-red-900 text-white shadow-[0_0_15px_rgba(239,68,68,0.5)]"
+                                          : animationStep === 5
+                                            ? "border-red-500 bg-red-900 text-white shadow-[0_0_15px_rgba(239,68,68,0.5)]"
+                                            : "border-purple-500 bg-purple-900 text-white shadow-[0_0_15px_rgba(168,85,247,0.5)]"
+                                      : isInPath && animationIndex > 0
+                                        ? "border-purple-400 bg-purple-800/50 text-white shadow-[0_0_10px_rgba(168,85,247,0.3)]"
+                                        : "border-muted-foreground/50 bg-background"
+                                  }
+                                  transition-all duration-300 z-10
+                                `}
+                                style={{
+                                  left: `${node.x}px`,
+                                  top: `${node.y}px`,
+                                }}
+                              >
+                                {node.value}
+                              </div>
+                            )
+                          })}
+                        </div>
                       </div>
+
+                      {/* Node count indicator */}
+                      <div className="mt-2 flex justify-between text-sm text-muted-foreground">
+                        <span>
+                          Nodes: {bst.getNodeCount()}/{MAX_NODES}
+                        </span>
+                        {bst.getNodeCount() >= MAX_NODES && (
+                          <span className="text-red-500 flex items-center">
+                            <AlertCircle className="h-4 w-4 mr-1" />
+                            Maximum node limit reached
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Error message */}
+                      {errorMessage && (
+                        <div className="mt-4 p-3 bg-red-900 border border-red-500 rounded-md text-white">
+                          <p className="flex items-center">
+                            <AlertCircle className="h-5 w-5 mr-2" />
+                            {errorMessage}
+                          </p>
+                        </div>
+                      )}
 
                       {/* Operation description */}
                       {isAnimating && (
@@ -648,7 +813,7 @@ export default function BinaryTreePage() {
                             {animationStep === 1 && "Traversing the tree..."}
                             {animationStep === 2 && "Node inserted successfully"}
                             {animationStep === 3 && "Node found!"}
-                            {animationStep === 4 && "Node not found"}
+                            {animationStep === 4 && "Operation failed"}
                             {animationStep === 5 && "Preparing to delete node..."}
                             {animationStep === 6 && "Node deleted successfully"}
                             {animationStep === 7 && "Traversal result: " + traversalResult.join(" → ")}
@@ -658,7 +823,7 @@ export default function BinaryTreePage() {
 
                       {/* Traversal result */}
                       {traversalResult.length > 0 && !isAnimating && (
-                        <div className="mt-4 p-3 bg-muted rounded-md">
+                        <div className="mt-4 p-3 bg-purple-900 border border-purple-500 rounded-md text-white">
                           <p className="font-medium">
                             {traversalType === "inorder" && "In-order Traversal (Left, Root, Right)"}
                             {traversalType === "preorder" && "Pre-order Traversal (Root, Left, Right)"}
@@ -702,18 +867,25 @@ export default function BinaryTreePage() {
                               placeholder="Enter a number"
                               value={value}
                               onChange={(e) => setValue(e.target.value)}
-                              disabled={isAnimating}
+                              disabled={isAnimating || bst.getNodeCount() >= MAX_NODES}
                             />
                           </div>
 
                           <Button
                             className="w-full"
                             onClick={handleInsert}
-                            disabled={!value || isNaN(Number(value)) || isAnimating}
+                            disabled={!value || isNaN(Number(value)) || isAnimating || bst.getNodeCount() >= MAX_NODES}
                           >
                             <Plus className="mr-2 h-4 w-4" />
                             Insert Node
                           </Button>
+
+                          {bst.getNodeCount() >= MAX_NODES && (
+                            <p className="text-sm text-red-500 mt-2 flex items-center">
+                              <AlertCircle className="h-4 w-4 mr-1" />
+                              Maximum node limit reached. Delete some nodes first.
+                            </p>
+                          )}
                         </TabsContent>
 
                         <TabsContent value="search" className="space-y-4">

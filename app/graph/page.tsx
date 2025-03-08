@@ -404,9 +404,10 @@ export default function GraphPage() {
                                 y1={sourcePos.y}
                                 x2={targetPos.x}
                                 y2={targetPos.y}
-                                stroke={isHighlighted ? "hsl(var(--primary))" : "hsl(var(--muted-foreground))"}
-                                strokeWidth={isHighlighted ? 3 : 1.5}
+                                stroke={isHighlighted ? "hsl(252, 100%, 69%)" : "hsl(var(--muted-foreground))"}
+                                strokeWidth={isHighlighted ? 4 : 1.5}
                                 strokeOpacity={isHighlighted ? 1 : 0.6}
+                                className={isHighlighted ? "filter drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]" : ""}
                                 strokeDasharray={isHighlighted ? "none" : "none"}
                               />
                             )
@@ -427,9 +428,9 @@ export default function GraphPage() {
                                 border-2 cursor-move select-none
                                 ${
                                   isActive
-                                    ? "border-primary bg-primary text-primary-foreground"
+                                    ? "border-purple-500 bg-purple-900 text-white shadow-[0_0_15px_rgba(168,85,247,0.5)]"
                                     : isTraversed
-                                      ? "border-primary/70 bg-primary/20"
+                                      ? "border-purple-400 bg-purple-800/50 text-white shadow-[0_0_10px_rgba(168,85,247,0.3)]"
                                       : "border-muted-foreground bg-background"
                                 }
                                 transition-colors duration-300
