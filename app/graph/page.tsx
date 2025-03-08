@@ -283,8 +283,9 @@ export default function GraphPage() {
     animateTraversal()
   }
 
-  // Handle node dragging
-  const handleNodeMouseDown = (nodeId: string) => {
+  // Handle node dragging - Mouse Events
+  const handleNodeMouseDown = (nodeId: string, e: React.MouseEvent | React.TouchEvent) => {
+    e.preventDefault() // Prevent default actions
     setDraggedNode(nodeId)
   }
 
@@ -298,7 +299,21 @@ export default function GraphPage() {
     setNodePositions((prev) => prev.map((node) => (node.id === draggedNode ? { ...node, x, y } : node)))
   }
 
-  const handleMouseUp = () => {
+  // Handle touch events for mobile devices
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!draggedNode || !canvasRef.current || e.touches.length === 0) return
+
+    e.preventDefault() // Prevent scrolling while dragging
+    
+    const rect = canvasRef.current.getBoundingClientRect()
+    const touch = e.touches[0]
+    const x = touch.clientX - rect.left
+    const y = touch.clientY - rect.top
+
+    setNodePositions((prev) => prev.map((node) => (node.id === draggedNode ? { ...node, x, y } : node)))
+  }
+
+  const handleDragEnd = () => {
     setDraggedNode(null)
   }
 
@@ -375,8 +390,11 @@ export default function GraphPage() {
                         ref={canvasRef}
                         className="relative h-[400px] border rounded-md bg-muted/30"
                         onMouseMove={handleMouseMove}
-                        onMouseUp={handleMouseUp}
-                        onMouseLeave={handleMouseUp}
+                        onMouseUp={handleDragEnd}
+                        onMouseLeave={handleDragEnd}
+                        onTouchMove={handleTouchMove}
+                        onTouchEnd={handleDragEnd}
+                        onTouchCancel={handleDragEnd}
                       >
                         {/* Edges */}
                         <svg className="absolute inset-0 w-full h-full pointer-events-none">
@@ -425,7 +443,7 @@ export default function GraphPage() {
                               key={node.id}
                               className={`
                                 absolute flex items-center justify-center w-12 h-12 rounded-full 
-                                border-2 cursor-move select-none
+                                border-2 cursor-move select-none touch-none
                                 ${
                                   isActive
                                     ? "border-purple-500 bg-purple-900 text-white shadow-[0_0_15px_rgba(168,85,247,0.5)]"
@@ -439,7 +457,8 @@ export default function GraphPage() {
                                 left: `${node.x - 24}px`,
                                 top: `${node.y - 24}px`,
                               }}
-                              onMouseDown={() => handleNodeMouseDown(node.id)}
+                              onMouseDown={(e) => handleNodeMouseDown(node.id, e)}
+                              onTouchStart={(e) => handleNodeMouseDown(node.id, e)}
                             >
                               {node.id}
 
@@ -706,4 +725,3 @@ export default function GraphPage() {
     </div>
   )
 }
-
