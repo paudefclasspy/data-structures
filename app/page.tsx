@@ -204,7 +204,7 @@ export default function Home() {
                 <span className="text-sm">LinkedIn</span>
               </a>
               <a 
-                href="https://github.com/paudefclasspy" 
+                href="https://github.com/paudefclasspy/data-structures" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 text-white/60 hover:text-purple-400 transition-colors"
