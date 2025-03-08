@@ -1,9 +1,11 @@
 import Link from "next/link"
 import { ArrowRight, Database, Linkedin, Github} from "lucide-react"
+import NotificationPopup from "../components/notificationpopup"
 
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col">
+      <NotificationPopup />
       <header className="border-b border-white/10 bg-black/20">
         <div className="container flex h-16 items-center px-4 sm:px-6 lg:px-8">
           <h1 className="text-lg font-semibold flex items-center gap-2">
