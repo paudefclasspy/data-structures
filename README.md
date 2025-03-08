@@ -3,9 +3,9 @@
 An interactive web app to visualize data structures in real-time. Perfect for students and developers learning algorithms.  
 
 ## Features  
-✅ Visualize trees, graphs, linked lists, etc.  
-✅ Perform insert, delete, search, and traversal operations.  
-✅ Real-time animations and complexity analysis.  
+Visualize trees, graphs, linked lists, etc.  
+Perform insert, delete, search, and traversal operations.  
+Real-time animations and complexity analysis.  
 
 # Contributing  
 
