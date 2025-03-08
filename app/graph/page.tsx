@@ -519,13 +519,13 @@ export default function GraphPage() {
                       <Tabs defaultValue="vertex" className="w-full">
                         <TabsList className="w-full">
                           <TabsTrigger value="vertex" className="flex-1">
-                            Vertex
+                            Add Vertex
                           </TabsTrigger>
                           <TabsTrigger value="edge" className="flex-1">
-                            Edge
+                            Add Edge
                           </TabsTrigger>
                           <TabsTrigger value="traversal" className="flex-1">
-                            Traversal
+                            Traverse
                           </TabsTrigger>
                         </TabsList>
 
