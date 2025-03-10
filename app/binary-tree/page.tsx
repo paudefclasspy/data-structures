@@ -843,19 +843,19 @@ export default function BinaryTreePage() {
                       <CardDescription>Perform operations on the binary search tree</CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <Tabs defaultValue="insert" className="w-full">
+                        <Tabs defaultValue="insert" className="w-full">
                         <TabsList className="w-full">
-                          <TabsTrigger value="insert" className="flex-1">
-                            Insert
+                          <TabsTrigger value="insert" className="flex-1 text-sm py-2">
+                          Insert
                           </TabsTrigger>
-                          <TabsTrigger value="search" className="flex-1">
-                            Search
+                          <TabsTrigger value="search" className="flex-1 text-sm py-2">
+                          Search
                           </TabsTrigger>
-                          <TabsTrigger value="delete" className="flex-1">
-                            Delete
+                          <TabsTrigger value="delete" className="flex-1 text-sm py-2">
+                          Delete
                           </TabsTrigger>
-                          <TabsTrigger value="traversal" className="flex-1">
-                            Traversal
+                          <TabsTrigger value="traversal" className="flex-1 text-sm py-2">
+                          Traversal
                           </TabsTrigger>
                         </TabsList>
 
