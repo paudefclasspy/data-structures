@@ -19,7 +19,7 @@ Issues and feature requests are welcome!
 
 ## Installation  
 ```
-git clone https://github.com/tu-usuario/data-structures-visualizer.git
+git clone https://github.com/username/data-structures-visualizer.git
 ```
 ```
 cd data-structures-visualizer
