@@ -304,15 +304,16 @@ class BinarySearchTree {
     const levelHeight = Math.min(70, (canvasHeight - 80) / (height || 1))
     const horizontalSpacing = Math.min(60, (canvasWidth - 80) / (width || 1))
 
-    // Padding from the edges
-    const padding = 30
+    // Padding from the edges - set to node radius (20) to ensure nodes are fully visible
+    const padding = 20
 
     const setPositions = (node: TreeNode | null, x: number, y: number, level: number) => {
       if (!node) return
 
-      // Ensure node is within boundaries
-      node.x = Math.max(padding, Math.min(canvasWidth - padding, x))
-      node.y = Math.max(padding, Math.min(canvasHeight - padding, y))
+      // Ensure node is within boundaries.
+      // Subtract 40 (node diameter) from the right and bottom boundaries.
+      node.x = Math.max(padding, Math.min(canvasWidth - padding - 40, x))
+      node.y = Math.max(padding, Math.min(canvasHeight - padding - 40, y))
 
       // Calculate horizontal offset based on tree balance
       const leftOffset = node.left ? horizontalSpacing * Math.pow(1.3, height - level - 1) : horizontalSpacing
@@ -327,8 +328,8 @@ class BinarySearchTree {
       }
     }
 
-    // Start positioning from the center of the canvas
-    setPositions(this.root, canvasWidth / 2, 40, 0)
+    // Start positioning from the center of the canvas (adjust for node size)
+    setPositions(this.root, canvasWidth / 2 - 20, 40, 0)
   }
 
   // Get all nodes for visualization
@@ -399,8 +400,9 @@ export default function BinaryTreePage() {
   // Update the tree visualization
   const updateTree = () => {
     if (canvasRef.current) {
-      const width = canvasRef.current.clientWidth || 600
-      const height = 800
+      const width = Math.max(canvasRef.current.clientWidth || 600, bst.getWidth() * 100) // Adjust width based on tree width
+      const height = Math.max(800, bst.getHeight() * 100) // Adjust height based on tree height
+      setCanvasSize({ width, height })
       bst.calculatePositions(width, height)
 
       // Get updated nodes and edges with boundary checking
@@ -627,8 +629,8 @@ export default function BinaryTreePage() {
   useEffect(() => {
     const updateCanvasSize = () => {
       if (canvasRef.current) {
-        const width = canvasRef.current.clientWidth || 600
-        const height = 800
+        const width = Math.max(canvasRef.current.clientWidth || 600, bst.getWidth() * 100) // Adjust width based on tree width
+        const height = Math.max(800, bst.getHeight() * 100) // Adjust height based on tree height
         setCanvasSize({ width, height })
         updateTree()
       }
@@ -1042,4 +1044,3 @@ export default function BinaryTreePage() {
     </div>
   )
 }
-
