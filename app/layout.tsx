@@ -8,7 +8,6 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Data Structures Visualizer",
   description: "Interactive visualizations of common data structures",
-    generator: 'v0.dev'
 }
 
 export default function RootLayout({

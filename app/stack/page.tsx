@@ -127,7 +127,7 @@ export default function StackPage() {
 
     // Step 2: Pop the item
     animationTimeoutRef.current = setTimeout(() => {
-      const poppedValue = stack.pop()
+      const poppedValue = stack.pop() ?? null
       setPoppedItem(poppedValue)
       updateStackItems()
       setAnimationStep(2)
@@ -182,9 +182,9 @@ export default function StackPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="border-b">
+      <header className="border-b border-white/10 bg-black/20">
         <div className="container flex h-16 items-center px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
+          <Link href="/" className="flex items-center gap-2 text-lg font-semibold text-white">
             <ArrowLeft className="h-5 w-5" />
             <span>Back to Home</span>
           </Link>
@@ -196,7 +196,7 @@ export default function StackPage() {
           <div className="mx-auto max-w-5xl">
             <div className="flex flex-col gap-8">
               <div>
-                <h1 className="text-3xl font-bold tracking-tight">Stack Visualization</h1>
+                <h1 className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">Stack Visualization</h1>
                 <p className="mt-2 text-lg text-muted-foreground">
                   Visualize operations on a stack data structure (Last-In-First-Out)
                 </p>
@@ -204,7 +204,7 @@ export default function StackPage() {
 
               <div className="grid gap-6 md:grid-cols-3">
                 <div className="md:col-span-2">
-                  <Card>
+                  <Card className="mt-6 card-gradient">
                     <CardHeader>
                       <CardTitle>Visualization</CardTitle>
                       <CardDescription>Visual representation of the stack</CardDescription>
@@ -275,7 +275,7 @@ export default function StackPage() {
                 </div>
 
                 <div>
-                  <Card>
+                  <Card className="mt-6 card-gradient">
                     <CardHeader>
                       <CardTitle>Operations</CardTitle>
                       <CardDescription>Perform operations on the stack</CardDescription>
@@ -342,10 +342,10 @@ export default function StackPage() {
                     </CardContent>
                   </Card>
 
-                  <Card className="mt-6">
+                  <Card className="mt-6 card-gradient">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
-                        <Info className="h-5 w-5" />
+                        <Info className="h-5 w-5 text-purple-400" />
                         Stack Properties
                       </CardTitle>
                     </CardHeader>
@@ -361,22 +361,22 @@ export default function StackPage() {
                         <div className="space-y-2">
                           <h4 className="font-medium">Time Complexity</h4>
                           <div className="flex justify-between">
-                            <span>Push:</span>
-                            <span className="font-mono">O(1)</span>
+                            <span className="text-white/70">Push:</span>
+                            <span className="font-mono text-purple-300">O(1)</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>Pop:</span>
-                            <span className="font-mono">O(1)</span>
+                            <span className="text-white/70">Pop:</span>
+                            <span className="font-mono text-purple-300">O(1)</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>Peek:</span>
-                            <span className="font-mono">O(1)</span>
+                            <span className="text-white/70">Peek:</span>
+                            <span className="font-mono text-purple-300">O(1)</span>
                           </div>
                         </div>
 
                         <div>
                           <h4 className="font-medium">Applications</h4>
-                          <ul className="list-disc list-inside text-muted-foreground mt-1">
+                          <ul className="list-disc list-inside text-white/70 mt-1">
                             <li>Function call management</li>
                             <li>Expression evaluation</li>
                             <li>Undo mechanisms</li>
