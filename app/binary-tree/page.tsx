@@ -392,7 +392,7 @@ export default function BinaryTreePage() {
   const [isAnimating, setIsAnimating] = useState(false)
   const [operationDescription, setOperationDescription] = useState("")
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const [canvasSize, setCanvasSize] = useState({ width: 600, height: 400 })
+  const [canvasSize, setCanvasSize] = useState({ width: 600, height: 800 })
   const canvasRef = useRef<HTMLDivElement>(null)
   const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
@@ -400,7 +400,7 @@ export default function BinaryTreePage() {
   const updateTree = () => {
     if (canvasRef.current) {
       const width = canvasRef.current.clientWidth || 600
-      const height = 400
+      const height = 800
       bst.calculatePositions(width, height)
 
       // Get updated nodes and edges with boundary checking
@@ -628,7 +628,7 @@ export default function BinaryTreePage() {
     const updateCanvasSize = () => {
       if (canvasRef.current) {
         const width = canvasRef.current.clientWidth || 600
-        const height = 400
+        const height = 800
         setCanvasSize({ width, height })
         updateTree()
       }
