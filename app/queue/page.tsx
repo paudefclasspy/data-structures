@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react"
 import Link from "next/link"
-import { ArrowLeft, Info, Plus, ArrowRight} from "lucide-react"
+import { ArrowLeft, Info, Plus, ArrowRight, Linkedin, Github} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -182,9 +182,9 @@ export default function QueuePage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="border-b">
+      <header className="border-b border-white/10 bg-black/20">
         <div className="container flex h-16 items-center px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
+          <Link href="/" className="flex items-center gap-2 text-lg font-semibold text-white">
             <ArrowLeft className="h-5 w-5" />
             <span>Back to Home</span>
           </Link>
@@ -196,15 +196,15 @@ export default function QueuePage() {
           <div className="mx-auto max-w-5xl">
             <div className="flex flex-col gap-8">
               <div>
-                <h1 className="text-3xl font-bold tracking-tight">Queue Visualization</h1>
-                <p className="mt-2 text-lg text-muted-foreground">
+                <h1 className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">Queue Visualization</h1>
+                <p className="mt-2 text-lg text-white/80">
                   Visualize operations on a queue data structure (First-In-First-Out)
                 </p>
               </div>
 
               <div className="grid gap-6 md:grid-cols-3">
                 <div className="md:col-span-2">
-                  <Card>
+                  <Card className="card-gradient">
                     <CardHeader>
                       <CardTitle>Visualization</CardTitle>
                       <CardDescription>Visual representation of the queue</CardDescription>
@@ -277,7 +277,7 @@ export default function QueuePage() {
                 </div>
 
                 <div>
-                  <Card>
+                  <Card className="card-gradient">
                     <CardHeader>
                       <CardTitle>Operations</CardTitle>
                       <CardDescription>Perform operations on the queue</CardDescription>
@@ -348,10 +348,10 @@ export default function QueuePage() {
                     </CardContent>
                   </Card>
 
-                  <Card className="mt-6">
+                  <Card className="mt-6 card-gradient">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
-                        <Info className="h-5 w-5" />
+                        <Info className="h-5 w-5 text-purple-400" />
                         Queue Properties
                       </CardTitle>
                     </CardHeader>
@@ -365,24 +365,24 @@ export default function QueuePage() {
                         </div>
 
                         <div className="space-y-2">
-                          <h4 className="font-medium">Time Complexity</h4>
+                          <h4 className="font-medium text-white">Time Complexity</h4>
                           <div className="flex justify-between">
-                            <span>Enqueue:</span>
-                            <span className="font-mono">O(1)</span>
+                            <span className="text-white/70">Enqueue:</span>
+                            <span className="font-mono text-purple-300">O(1)</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>Dequeue:</span>
-                            <span className="font-mono">O(1)</span>
+                            <span className="text-white/70">Dequeue:</span>
+                            <span className="font-mono text-purple-300">O(1)</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>Peek:</span>
-                            <span className="font-mono">O(1)</span>
+                            <span className="text-white/70">Peek:</span>
+                            <span className="font-mono text-purple-300">O(1)</span>
                           </div>
                         </div>
 
                         <div>
-                          <h4 className="font-medium">Applications</h4>
-                          <ul className="list-disc list-inside text-muted-foreground mt-1">
+                          <h4 className="font-medium text-white">Applications</h4>
+                          <ul className="list-disc list-inside text-white/70 mt-1">
                             <li>Task scheduling</li>
                             <li>Print job management</li>
                             <li>Breadth-first search</li>
@@ -398,6 +398,33 @@ export default function QueuePage() {
           </div>
         </div>
       </main>
+      <footer className="border-t border-white/10 py-6 bg-black/20">
+        <div className="container px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col items-center justify-center gap-3">
+            <p className="text-center text-sm text-white/60">Data Structures Visualizer - An interactive learning tool created by Pau Aranega Bellido</p>
+            <div className="flex items-center gap-4">
+              <a 
+                href="https://www.linkedin.com/in/pauaranegabellido" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-white/60 hover:text-purple-400 transition-colors"
+              >
+                <Linkedin className="h-4 w-4" />
+                <span className="text-sm">LinkedIn</span>
+              </a>
+              <a 
+                href="https://github.com/paudefclasspy/data-structures" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-white/60 hover:text-purple-400 transition-colors"
+              >
+                <Github className="h-4 w-4" />
+                <span className="text-sm">GitHub</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }

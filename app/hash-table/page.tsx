@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react"
 import Link from "next/link"
-import { ArrowLeft, Info, Plus, Search, Trash, ArrowDown } from "lucide-react"
+import { ArrowLeft, Info, Plus, Search, Trash, ArrowDown, Linkedin, Github } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -242,7 +242,7 @@ export default function HashTablePage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="border-b">
+      <header className="border-b border-white/10 bg-black/20">
         <div className="container flex h-16 items-center px-4 sm:px-6 lg:px-8">
           <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
             <ArrowLeft className="h-5 w-5" />
@@ -256,7 +256,7 @@ export default function HashTablePage() {
           <div className="mx-auto max-w-5xl">
             <div className="flex flex-col gap-8">
               <div>
-                <h1 className="text-3xl font-bold tracking-tight">Hash Table Visualization</h1>
+                <h1 className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">Hash Table Visualization</h1>
                 <p className="mt-2 text-lg text-muted-foreground">
                   Visualize operations on a hash table data structure with separate chaining
                 </p>
@@ -264,7 +264,7 @@ export default function HashTablePage() {
 
               <div className="grid gap-6 md:grid-cols-3">
                 <div className="md:col-span-2">
-                  <Card>
+                  <Card className="card-gradient">
                     <CardHeader>
                       <CardTitle>Visualization</CardTitle>
                       <CardDescription>Visual representation of the hash table</CardDescription>
@@ -375,7 +375,7 @@ export default function HashTablePage() {
                 </div>
 
                 <div>
-                  <Card>
+                  <Card className="card-gradient">
                     <CardHeader>
                       <CardTitle>Operations</CardTitle>
                       <CardDescription>Perform operations on the hash table</CardDescription>
@@ -468,10 +468,10 @@ export default function HashTablePage() {
                     </CardContent>
                   </Card>
 
-                  <Card className="mt-6">
+                  <Card className="mt-6 card-gradient">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
-                        <Info className="h-5 w-5" />
+                        <Info className="h-5 w-5 text-purple-400" />
                         Hash Table Properties
                       </CardTitle>
                     </CardHeader>
@@ -489,21 +489,21 @@ export default function HashTablePage() {
                           <h4 className="font-medium">Time Complexity</h4>
                           <div className="flex justify-between">
                             <span>Insert:</span>
-                            <span className="font-mono">O(1) average</span>
+                            <span className="font-mono text-purple-300">O(1) average</span>
                           </div>
                           <div className="flex justify-between">
                             <span>Search:</span>
-                            <span className="font-mono">O(1) average</span>
+                            <span className="font-mono text-purple-300">O(1) average</span>
                           </div>
                           <div className="flex justify-between">
                             <span>Delete:</span>
-                            <span className="font-mono">O(1) average</span>
+                            <span className="font-mono text-purple-300">O(1) average</span>
                           </div>
                         </div>
 
                         <div>
-                          <h4 className="font-medium">Applications</h4>
-                          <ul className="list-disc list-inside text-muted-foreground mt-1">
+                          <h4 className="font-medium text-white">Applications</h4>
+                          <ul className="list-disc list-inside text-white/70 mt-1">
                             <li>Database indexing</li>
                             <li>Caching</li>
                             <li>Symbol tables in compilers</li>
@@ -519,6 +519,33 @@ export default function HashTablePage() {
           </div>
         </div>
       </main>
+      <footer className="border-t border-white/10 py-6 bg-black/20">
+        <div className="container px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col items-center justify-center gap-3">
+            <p className="text-center text-sm text-white/60">Data Structures Visualizer - An interactive learning tool created by Pau Aranega Bellido</p>
+            <div className="flex items-center gap-4">
+              <a 
+                href="https://www.linkedin.com/in/pauaranegabellido" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-white/60 hover:text-purple-400 transition-colors"
+              >
+                <Linkedin className="h-4 w-4" />
+                <span className="text-sm">LinkedIn</span>
+              </a>
+              <a 
+                href="https://github.com/paudefclasspy/data-structures" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-white/60 hover:text-purple-400 transition-colors"
+              >
+                <Github className="h-4 w-4" />
+                <span className="text-sm">GitHub</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }

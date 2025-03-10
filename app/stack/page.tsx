@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react"
 import Link from "next/link"
-import { ArrowLeft, Info, Plus, ArrowUp } from "lucide-react"
+import { ArrowLeft, Info, Plus, ArrowUp, Linkedin, Github } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -392,6 +392,33 @@ export default function StackPage() {
           </div>
         </div>
       </main>
+      <footer className="border-t border-white/10 py-6 bg-black/20">
+        <div className="container px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col items-center justify-center gap-3">
+            <p className="text-center text-sm text-white/60">Data Structures Visualizer - An interactive learning tool created by Pau Aranega Bellido</p>
+            <div className="flex items-center gap-4">
+              <a 
+                href="https://www.linkedin.com/in/pauaranegabellido" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-white/60 hover:text-purple-400 transition-colors"
+              >
+                <Linkedin className="h-4 w-4" />
+                <span className="text-sm">LinkedIn</span>
+              </a>
+              <a 
+                href="https://github.com/paudefclasspy/data-structures" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-white/60 hover:text-purple-400 transition-colors"
+              >
+                <Github className="h-4 w-4" />
+                <span className="text-sm">GitHub</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }

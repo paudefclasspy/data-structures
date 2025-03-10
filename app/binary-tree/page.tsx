@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react"
 import Link from "next/link"
-import { ArrowLeft, Info, Plus, Search, Trash, AlertCircle } from "lucide-react"
+import { ArrowLeft, Info, Plus, Search, Trash, AlertCircle, Linkedin, Github } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -687,7 +687,7 @@ export default function BinaryTreePage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="border-b">
+      <header className="border-b border-white/10 bg-black/20">
         <div className="container flex h-16 items-center px-4 sm:px-6 lg:px-8">
           <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
             <ArrowLeft className="h-5 w-5" />
@@ -701,7 +701,7 @@ export default function BinaryTreePage() {
           <div className="mx-auto max-w-5xl">
             <div className="flex flex-col gap-8">
               <div>
-                <h1 className="text-3xl font-bold tracking-tight">Binary Search Tree Visualization</h1>
+                <h1 className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">Binary Search Tree Visualization</h1>
                 <p className="mt-2 text-lg text-muted-foreground">
                   Visualize operations on a binary search tree data structure (Max {MAX_NODES} nodes)
                 </p>
@@ -709,7 +709,7 @@ export default function BinaryTreePage() {
 
               <div className="grid gap-6 md:grid-cols-3">
                 <div className="md:col-span-2">
-                  <Card>
+                  <Card className="card-gradient">
                     <CardHeader>
                       <CardTitle>Visualization</CardTitle>
                       <CardDescription>
@@ -837,7 +837,7 @@ export default function BinaryTreePage() {
                 </div>
 
                 <div>
-                  <Card>
+                  <Card className="card-gradient">
                     <CardHeader>
                       <CardTitle>Operations</CardTitle>
                       <CardDescription>Perform operations on the binary search tree</CardDescription>
@@ -957,10 +957,10 @@ export default function BinaryTreePage() {
                     </CardContent>
                   </Card>
 
-                  <Card className="mt-6">
+                  <Card className="mt-6 card-gradient">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
-                        <Info className="h-5 w-5" />
+                        <Info className="h-5 w-5 text-purple-400" />
                         Binary Search Tree Properties
                       </CardTitle>
                     </CardHeader>
@@ -968,7 +968,7 @@ export default function BinaryTreePage() {
                       <div className="space-y-4 text-sm">
                         <div>
                           <h4 className="font-medium">Ordering Property</h4>
-                          <p className="text-muted-foreground mt-1">
+                          <p className="text-white/70 mt-1">
                             For each node, all values in the left subtree are less than the node's value, and all values
                             in the right subtree are greater.
                           </p>
@@ -977,26 +977,26 @@ export default function BinaryTreePage() {
                         <div className="space-y-2">
                           <h4 className="font-medium">Time Complexity</h4>
                           <div className="flex justify-between">
-                            <span>Insert:</span>
-                            <span className="font-mono">O(log n) average</span>
+                            <span className="text-white/70">Insert:</span>
+                            <span className="font-mono text-purple-300">O(log n) average</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>Search:</span>
-                            <span className="font-mono">O(log n) average</span>
+                            <span className="text-white/70">Search:</span>
+                            <span className="font-mono text-purple-300">O(log n) average</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>Delete:</span>
-                            <span className="font-mono">O(log n) average</span>
+                            <span className="text-white/70">Delete:</span>
+                            <span className="font-mono text-purple-300">O(log n) average</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>Traversal:</span>
-                            <span className="font-mono">O(n)</span>
+                            <span className="text-white/70">Traversal:</span>
+                            <span className="font-mono text-purple-300">O(n)</span>
                           </div>
                         </div>
 
                         <div>
-                          <h4 className="font-medium">Applications</h4>
-                          <ul className="list-disc list-inside text-muted-foreground mt-1">
+                          <h4 className="font-medium text-white">Applications</h4>
+                          <ul className="list-disc list-inside text-white/70 mt-1">
                             <li>Searching and sorting</li>
                             <li>Priority queues</li>
                             <li>Database indexing</li>
@@ -1012,6 +1012,33 @@ export default function BinaryTreePage() {
           </div>
         </div>
       </main>
+      <footer className="border-t border-white/10 py-6 bg-black/20">
+        <div className="container px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col items-center justify-center gap-3">
+            <p className="text-center text-sm text-white/60">Data Structures Visualizer - An interactive learning tool created by Pau Aranega Bellido</p>
+            <div className="flex items-center gap-4">
+              <a 
+                href="https://www.linkedin.com/in/pauaranegabellido" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-white/60 hover:text-purple-400 transition-colors"
+              >
+                <Linkedin className="h-4 w-4" />
+                <span className="text-sm">LinkedIn</span>
+              </a>
+              <a 
+                href="https://github.com/paudefclasspy/data-structures" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-white/60 hover:text-purple-400 transition-colors"
+              >
+                <Github className="h-4 w-4" />
+                <span className="text-sm">GitHub</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }
